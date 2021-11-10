@@ -21,9 +21,17 @@ public class PlayerTap : DamageCause
          
     }
 
-    public void DamageCauseSignalDetected(object sender, EventArgs args)
+    public void OnEnable()
     {
         sensor.SensorTriggered += DamageCauseSignalDetected;
+    }
+    
+    public void OnDisable()
+    {
+        sensor.SensorTriggered -= DamageCauseSignalDetected;
+    }
+    public void DamageCauseSignalDetected(object sender, EventArgs args)
+    {
         damageEffect.Trigger(this);
         
         if (args is SensorEventArgs && ((SensorEventArgs)args).associatedPointerPayload.position != null)
@@ -31,7 +39,5 @@ public class PlayerTap : DamageCause
             Vector3 pos = _camera.ScreenToWorldPoint(((SensorEventArgs)args).associatedPointerPayload.position);
             Instantiate(damageVFX, new Vector3(pos.x, pos.y, damageVFX.transform.position.z), Quaternion.identity);
         }
-
-        sensor.SensorTriggered -= DamageCauseSignalDetected;
     }
 }

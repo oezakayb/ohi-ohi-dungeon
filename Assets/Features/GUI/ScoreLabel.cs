@@ -11,6 +11,16 @@ public class ScoreLabel : MonoBehaviour
     {
         _text = GetComponent<Text>();
     }
+    
+    public void OnEnable()
+    {
+        GameData.Instance.ScoreUpdated += ScoreChanged;
+    }
+    
+    public void OnDisable()
+    {
+        GameData.Instance.ScoreUpdated -= ScoreChanged;
+    }
 
     public void UpdateText(int score)
     {
@@ -19,8 +29,6 @@ public class ScoreLabel : MonoBehaviour
 
     public void ScoreChanged(object sender, int args)
     {
-        GameData.Instance.ScoreUpdated += ScoreChanged;
         UpdateText(args);
-        GameData.Instance.ScoreUpdated -= ScoreChanged;
     }
 }

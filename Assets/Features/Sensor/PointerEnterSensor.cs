@@ -21,6 +21,5 @@ public class PointerEnterSensor : Sensor, IPointerEnterHandler
     {
         SensorEventArgs eventArgs = new SensorEventArgs(eventData);
         OnSensorTriggered(eventArgs);
-        Debug.Log("Check");
     }
 }
