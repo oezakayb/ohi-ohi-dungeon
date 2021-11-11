@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
+
 
 [RequireComponent(typeof(Text))]
 public class ScoreLabel : MonoBehaviour
@@ -10,25 +12,9 @@ public class ScoreLabel : MonoBehaviour
     private void Start()
     {
         _text = GetComponent<Text>();
-    }
-    
-    public void OnEnable()
-    {
-        GameData.Instance.ScoreUpdated += ScoreChanged;
-    }
-    
-    public void OnDisable()
-    {
-        GameData.Instance.ScoreUpdated -= ScoreChanged;
-    }
-
-    public void UpdateText(int score)
-    {
-        _text.text = score.ToString();
-    }
-
-    public void ScoreChanged(object sender, int args)
-    {
-        UpdateText(args);
+		GameData.Instance.score
+						//.Select(score => string.Format("Score: {0}", score))
+						.Subscribe(score => _text.text = "" + score)
+						.AddTo(this);
     }
 }

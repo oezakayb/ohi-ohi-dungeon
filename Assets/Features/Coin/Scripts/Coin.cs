@@ -14,17 +14,13 @@ public class Coin : MonoBehaviour
         animationController.PlaySpawnAnimation();
     }
 
-    public void OnEnable()
+    private void Start()
     {
-        sensor.SensorTriggered += CollectSignalDetected;
-    }
-    
-    public void OnDisable()
-    {
-        sensor.SensorTriggered -= CollectSignalDetected;
+        sensor.SensorTriggered.Subscribe(CollectSignalDetected)
+                            .AddTo(this);
     }
 
-    public void CollectSignalDetected(object sender, EventArgs args)
+    public void CollectSignalDetected(EventArgs args)
     {
         Collect();
         Destroy(sensor.gameObject);

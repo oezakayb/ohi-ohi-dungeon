@@ -18,19 +18,11 @@ public class PlayerTap : DamageCause
 
     private void Start()
     {
-         
+         sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected)
+								.AddTo(this);
     }
 
-    public void OnEnable()
-    {
-        sensor.SensorTriggered += DamageCauseSignalDetected;
-    }
-    
-    public void OnDisable()
-    {
-        sensor.SensorTriggered -= DamageCauseSignalDetected;
-    }
-    public void DamageCauseSignalDetected(object sender, EventArgs args)
+    public void DamageCauseSignalDetected(EventArgs args)
     {
         damageEffect.Trigger(this);
         

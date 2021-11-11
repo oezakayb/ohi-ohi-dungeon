@@ -2,24 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UniRx;
+using UniRx.Triggers;
 
-public class PointerEnterSensor : Sensor, IPointerEnterHandler
+public class PointerEnterSensor : Sensor
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    
+    private void Awake() {
+        ObservablePointerEnterTrigger trigger = this.gameObject.AddComponent<ObservablePointerEnterTrigger>();
+        SensorTriggered = trigger.OnPointerEnterAsObservable() 
+            .Select(e => new SensorEventArgs(e)); //IObservable<EventArgs>
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
+    //without UniRx 
+    /*public void OnPointerEnter(PointerEventData eventData)
     {
         SensorEventArgs eventArgs = new SensorEventArgs(eventData);
         OnSensorTriggered(eventArgs);
-    }
+    }*/ 
 }

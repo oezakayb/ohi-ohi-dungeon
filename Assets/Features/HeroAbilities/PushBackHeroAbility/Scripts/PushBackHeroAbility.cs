@@ -9,6 +9,7 @@ using UnityEngine;
 public class PushBackHeroAbility : MonoBehaviour
 {
 	private Collider2D _collider;
+	public Sensor sensor;
 
 	[SerializeField] private float duration = 0.5f;
 	[SerializeField] private float strength = 1f;
@@ -25,9 +26,14 @@ public class PushBackHeroAbility : MonoBehaviour
 	{
 		_collider = GetComponent<Collider2D>();
 		StartCoroutine(StartCooldown());
+		sensor.SensorTriggered
+			.Buffer(sensor.SensorTriggered.Throttle(TimeSpan.FromMilliseconds(250)))
+			.Where(xs => xs.Count >= 2)
+			.Subscribe(ActivateAbilityDetected)
+			.AddTo(this);
 	}
 
-	public void ActivateAbility(EventArgs args)
+	public void ActivateAbilityDetected(IList<EventArgs> args)
 	{
 		if (GameData.Instance.abilityAvailable.Value == true)
 		{

@@ -13,8 +13,7 @@ public class GameData : SingletonMonoBehaviour<GameData>
         Orcs
     }
 
-    public int score;
-    public event EventHandler<int> ScoreUpdated; 
+    public ReactiveProperty<int> score = new ReactiveProperty<int>(0);
 
     public ReactiveProperty<bool> abilityAvailable = new ReactiveProperty<bool>(false);
    
@@ -28,7 +27,7 @@ public class GameData : SingletonMonoBehaviour<GameData>
 
     public void IncreaseScore(int value)
     {
-        setScore(score + value);
+        setScore(score.Value + value);
     }
 
     public void ResetScore()
@@ -38,13 +37,12 @@ public class GameData : SingletonMonoBehaviour<GameData>
 
     public int getScore()
     {
-        return score;
+        return score.Value;
     }
     
     public void setScore(int score)
     {
-        this.score = score;
-        ScoreUpdated?.Invoke(this, score);
+        this.score.Value = score;
     }
 
     public void SetAbilityAvailable(bool value)
