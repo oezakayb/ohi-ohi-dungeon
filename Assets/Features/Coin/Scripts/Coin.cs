@@ -23,7 +23,6 @@ public class Coin : MonoBehaviour
     public void CollectSignalDetected(EventArgs args)
     {
         Collect();
-        Destroy(sensor.gameObject);
     }
 
     public void Collect()

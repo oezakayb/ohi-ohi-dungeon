@@ -27,7 +27,7 @@ public class PushBackHeroAbility : MonoBehaviour
 		_collider = GetComponent<Collider2D>();
 		StartCoroutine(StartCooldown());
 		sensor.SensorTriggered
-			.Buffer(sensor.SensorTriggered.Throttle(TimeSpan.FromMilliseconds(250)))
+			.Buffer(sensor.SensorTriggered.Throttle(TimeSpan.FromMilliseconds(150)))
 			.Where(xs => xs.Count >= 2)
 			.Subscribe(ActivateAbilityDetected)
 			.AddTo(this);
@@ -48,7 +48,7 @@ public class PushBackHeroAbility : MonoBehaviour
 			StartCoroutine(StartCooldown());
 		}
 	}
-
+	
 	private IEnumerator StartCooldown()
 	{
 		GameData.Instance.SetAbilityAvailable(false);
